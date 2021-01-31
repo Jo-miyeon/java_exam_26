@@ -11,13 +11,49 @@ public class java_exam {
 		Scanner sc = new Scanner(System.in);
 		ArticleDao dao = new ArticleDao();
 		ReplyDao rdao = new ReplyDao();
+		MemberDao mdao = new MemberDao();
 
+		Member loginedMember = null;
+		
 		while (true) {
-			System.out.print("명령어입력 : ");
+			if(loginedMember == null) {
+				System.out.print("명령어입력 : ");
+			}else {
+				System.out.println("명령어 입력["+loginedMember.getNickname()+"] :");
+			}
+			
 			String str = sc.nextLine();
 			if (str.equals("exit")) {
 				break;
-			} else if (str.equals("add")) {
+			}else if(str.equals("sign up")) {
+				Member m = new Member();
+				System.out.println("==== 회원 가입을 진행합니다. ====");
+				System.out.println("아이디를 입력해주세요:");
+				String signupId = sc.nextLine();
+				m.setLoginId(signupId);
+				System.out.println("비밀번호를 입력해주세요:");
+				String signupPw = sc.nextLine();
+				m.setLoginPw(signupPw);
+				System.out.println("닉네임을 입력해주세요:");
+				String signupNn = sc.nextLine();
+				m.setNickname(signupNn);
+				mdao.insertMember(m);
+				System.out.println("==== 회원가입이 완료되었습니다. ====");
+			}else if(str.equals("sign in")) {
+				Member m = new Member();
+				System.out.println("아이디:");
+				String signinId = sc.nextLine();
+				System.out.println("비밀번호:");
+				String signinPw = sc.nextLine();
+				Member member = mdao.getMemberByLoginIdandLoginPw(signinId,signinPw);
+				if(member==null) {
+					System.out.println("비밀번호를 틀렸거나 잘못된 회원정보입니다.");
+				}else {
+					loginedMember = member;
+					System.out.println(loginedMember.getNickname()+"님 안녕하세요!");
+				}
+			}
+			else if (str.equals("add")) {
 				Article a = new Article();
 				
 				System.out.println("게시물 제목을 입력해주세요 :");
@@ -118,6 +154,10 @@ public class java_exam {
 				printArticles(articles);
 			}
 		}
+	}
+	private static void getMemberByLoginIdandLoginPw(String signinId, String signinPw) {
+		// TODO Auto-generated method stub
+		
 	}
 	private static void printArticles(ArrayList<Article> articleList) {
 		for(int i=0;i<articleList.size();i++) {
