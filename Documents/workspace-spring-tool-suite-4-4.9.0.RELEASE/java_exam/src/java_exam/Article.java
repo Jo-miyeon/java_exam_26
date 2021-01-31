@@ -48,6 +48,12 @@ public class Article {
 	public void setBody(String body) {
 		this.body = body;
 	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	
 	
 }
